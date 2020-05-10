@@ -5,6 +5,7 @@ Windows 10 &amp; 8 notifications from Garry's Mod
 ### Functions
 
 `WinToast.Show(string title, string content, string? image_path)`
+
 image_path is an optional parameter its root is located in the `data` folder.
 
 ### Example
