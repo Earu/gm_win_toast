@@ -18,7 +18,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef WINTOASTLIB_H
+#if !defined(WINTOASTLIB_H) && defined(_WIN32)
 #define WINTOASTLIB_H
 #include <Windows.h>
 #include <sdkddkver.h>

@@ -1,10 +1,16 @@
+#ifdef _WIN32
 #include <wintoastlib.h>
+#elif defined(__linux__)
+#include <libnotify/notify.h>
+#endif
 #include <filesystem>
 #include <GarrysMod/Lua/Interface.h>
 
 //using namespace WinToastLib;
 
+#ifdef _WIN32
 const auto AUMI = WinToastLib::WinToast::configureAUMI(L"Facepunch", L"Garry's Mod");
+#endif
 bool is_usable = true;
 static const char* error_reasons[] = {
 	"No error",
@@ -22,6 +28,7 @@ const std::string get_toast_error(int enum_value)
 	return std::string(error_reasons[enum_value]);
 }
 
+#ifdef _WIN32
 const std::wstring to_utf16(const char* utf8_str)
 {
 	const std::string base_str(utf8_str);
@@ -38,6 +45,7 @@ public:
 	void toastDismissed(WinToastLib::IWinToastHandler::WinToastDismissalReason state) const {}
 	void toastFailed() const {}
 };
+#endif
 
 LUA_FUNCTION(show_toast)
 {
@@ -50,6 +58,8 @@ LUA_FUNCTION(show_toast)
 	const char* title = LUA->CheckString(1);
 	const char* content = LUA->CheckString(2);
 
+#ifdef _WIN32
+
 	WinToastLib::WinToastTemplate templ(has_image_path 
 		? WinToastLib::WinToastTemplate::ImageAndText02
 		: WinToastLib::WinToastTemplate::Text02
@@ -57,22 +67,48 @@ LUA_FUNCTION(show_toast)
 
 	templ.setTextField(to_utf16(title), WinToastLib::WinToastTemplate::TextField::FirstLine);
 	templ.setTextField(to_utf16(content), WinToastLib::WinToastTemplate::TextField::SecondLine);
+#endif
 
+#ifdef __linux__
+	NotifyNotification* Notification;
+#endif
 	if (has_image_path) 
 	{
 		const char* data_path = LUA->CheckString(3);
+#ifdef _WIN32
 		const std::wstring gmod_path = std::filesystem::current_path().wstring();
 		const std::wstring full_path = gmod_path + L"/garrysmod/data/" + to_utf16(data_path);
 		templ.setImagePath(full_path);
+#elif defined(__linux__)
+		const std::string gmod_path = std::filesystem::current_path();
+		const std::string full_path = gmod_path + "/garrysmod/data/" + data_path;
+		Notification = notify_notification_new(title, content, full_path.c_str());
+#endif
 	}
+#ifdef __linux__
+	else {
+		Notification = notify_notification_new(title, content, "dialog-information");
+	}
+#endif
 
+#ifdef __linux__
+	const bool success = notify_notification_show(Notification, NULL) == TRUE;
+	g_object_unref(G_OBJECT(Notification));
+#elif defined(_WIN32)
 	const bool success = WinToastLib::WinToast::instance()->showToast(templ, new WinNotifsHandler()) >= 0;
+#endif
 	LUA->PushBool(success);
 	return 1;
 }
 
 GMOD_MODULE_OPEN()
 {
+#ifdef __linux__
+	if(notify_init("Garry's Mod") == FALSE) {
+		is_usable = false;
+		return 0;
+	}
+#elif defined(_WIN32)
 	if (!WinToastLib::WinToast::isCompatible())
 	{
 		//LUA->ThrowError("[WinToasts] Your system is not supported!");
@@ -91,6 +127,10 @@ GMOD_MODULE_OPEN()
 		is_usable = false;
 		return 0;
 	}
+#else
+	// Poor macOS users ;(
+	is_usable = false;
+#endif
 
 	LUA->PushSpecial(GarrysMod::Lua::SPECIAL_GLOB);
 
@@ -106,5 +146,8 @@ GMOD_MODULE_OPEN()
 
 GMOD_MODULE_CLOSE()
 {
+#ifdef __linux__
+	notify_uninit();
+#endif
 	return 0;
 }
