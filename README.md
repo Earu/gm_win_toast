@@ -1,6 +1,7 @@
 # gm_win_toast
-Windows 10 &amp; 8 notifications from Garry's Mod
+Windows 10 &amp; 8 and Linux desktop notifications from Garry's Mod.
 
+**Why is it called win_toast?** The module was originally intended for Windows, but later on got support for Linux.
 
 ### Functions
 
