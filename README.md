@@ -21,7 +21,7 @@ image_path is an optional parameter its root is located in the `data` folder.
 
 ### Example
 
-The example below will fire a new Windows notification for each chat message with the title being the player's nick and the content, the player message.
+The example below will display a new desktop notification for each chat message with the title being the player's nick and the content, the player message.
 ```lua
 hook.Add("OnPlayerChat", "chat_notification", function(ply, msg)
 	WinToast.Show(ply:Nick(), msg)
