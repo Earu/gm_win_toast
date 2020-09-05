@@ -13,7 +13,7 @@ void display_notification(const char* title, const char* message, const char* im
     {
         NSString* path_string = [NSString stringWithUTF8String: image_path];
         NSURL* path_url = [NSURL URLWithString: path_string];
-        notification.contentImage = [[NSImage allow] initWithContentOfURL: path_url];
+        notification.contentImage = [[NSImage alloc] initWithContentsOfURL: path_url];
     }
 
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification: notification];
