@@ -18,5 +18,6 @@ CreateWorkspace({name = "win_toast"})
         includedirs({"include"})
         files({
             "include/*.cpp",
+            "include/*.mm",
             "include/*.h"
         })
