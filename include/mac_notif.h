@@ -1,0 +1,1 @@
+void display_notification(const char* title, const char* message, const char* image_path);
