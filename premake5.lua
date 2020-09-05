@@ -10,6 +10,7 @@ include(path.join(gmcommon, "generator.v3.lua"))
 
 CreateWorkspace({name = "win_toast"})
     CreateProject({serverside = false})
+        links("AppKit.framework")
         IncludeLuaShared()
         filter("system:linux")
             linkoptions({"-lnotify", "`pkg-config --libs libnotify`"})

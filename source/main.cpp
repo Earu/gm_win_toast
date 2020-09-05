@@ -91,8 +91,17 @@ LUA_FUNCTION(show_toast)
 		Notification = notify_notification_new(title, content, full_path.c_str());
 #elif defined(__APPLE__)
 		const std::string gmod_path = get_current_path();
-		//const std::string full_path = gmod_path + "/garrysmod/data/" + data_path;
-		display_notification(title, gmod_path.c_str(), nullptr);//, full_path.c_str());
+		const std::string needle = "/common/GarrysMod";
+		std::size_t pos = gmod_path.find(needle);
+		if (pos != std::string::npos) 
+		{
+			const std::string full_path = gmod_path.substr(0, pos + needle.size()) + "/garrysmod/data/" + data_path;
+			display_notification(title, content, full_path.c_str());
+		}
+		else
+		{
+			display_notification(title, content, nullptr);
+		}
 #endif
 	}
 #ifdef __linux__

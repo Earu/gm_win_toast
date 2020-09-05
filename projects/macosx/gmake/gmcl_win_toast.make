@@ -30,7 +30,7 @@ ifeq ($(config),releasewithsymbols_x86_64)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -Wundef -O0 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -g -msse2 -Wall -Wextra -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -Wundef -O0 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -g -msse2 -Wall -Wextra -std=gnu++17 -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86_64/ReleaseWithSymbols/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86_64/ReleaseWithSymbols/liblua_shared.a
+  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86_64/ReleaseWithSymbols/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86_64/ReleaseWithSymbols/liblua_shared.a -framework AppKit
   LDDEPS += ../../../../garrysmod_common/projects/macosx/gmake/x86_64/ReleaseWithSymbols/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86_64/ReleaseWithSymbols/liblua_shared.a
   ALL_LDFLAGS += $(LDFLAGS) -m64 -dynamiclib -Wl,-install_name,@rpath/gmcl_win_toast_osx64.dll -mmacosx-version-min=10.7 -stdlib=libc++
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -65,7 +65,7 @@ ifeq ($(config),releasewithsymbols_x86)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -Wundef -O0 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -g -msse2 -Wall -Wextra -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -Wundef -O0 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -g -msse2 -Wall -Wextra -std=gnu++17 -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86/ReleaseWithSymbols/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86/ReleaseWithSymbols/liblua_shared.a
+  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86/ReleaseWithSymbols/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86/ReleaseWithSymbols/liblua_shared.a -framework AppKit
   LDDEPS += ../../../../garrysmod_common/projects/macosx/gmake/x86/ReleaseWithSymbols/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86/ReleaseWithSymbols/liblua_shared.a
   ALL_LDFLAGS += $(LDFLAGS) -m32 -dynamiclib -Wl,-install_name,@rpath/gmcl_win_toast_osx.dll -mmacosx-version-min=10.7 -stdlib=libc++
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -100,7 +100,7 @@ ifeq ($(config),release_x86_64)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -Wundef -flto -O3 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -msse2 -Wall -Wextra -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -Wundef -flto -O3 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -msse2 -Wall -Wextra -std=gnu++17 -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Release/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Release/liblua_shared.a
+  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Release/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Release/liblua_shared.a -framework AppKit
   LDDEPS += ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Release/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Release/liblua_shared.a
   ALL_LDFLAGS += $(LDFLAGS) -m64 -flto -dynamiclib -Wl,-install_name,@rpath/gmcl_win_toast_osx64.dll -mmacosx-version-min=10.7 -stdlib=libc++
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -135,7 +135,7 @@ ifeq ($(config),release_x86)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -Wundef -flto -O3 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -msse2 -Wall -Wextra -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -Wundef -flto -O3 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -msse2 -Wall -Wextra -std=gnu++17 -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86/Release/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86/Release/liblua_shared.a
+  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86/Release/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86/Release/liblua_shared.a -framework AppKit
   LDDEPS += ../../../../garrysmod_common/projects/macosx/gmake/x86/Release/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86/Release/liblua_shared.a
   ALL_LDFLAGS += $(LDFLAGS) -m32 -flto -dynamiclib -Wl,-install_name,@rpath/gmcl_win_toast_osx.dll -mmacosx-version-min=10.7 -stdlib=libc++
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -170,7 +170,7 @@ ifeq ($(config),debug_x86_64)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -Wundef -O0 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -g -msse2 -Wall -Wextra -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -Wshadow -Wundef -O0 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -g -msse2 -Wall -Wextra -std=gnu++17 -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Debug/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Debug/liblua_shared.a
+  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Debug/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Debug/liblua_shared.a -framework AppKit
   LDDEPS += ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Debug/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86_64/Debug/liblua_shared.a
   ALL_LDFLAGS += $(LDFLAGS) -m64 -dynamiclib -Wl,-install_name,@rpath/gmcl_win_toast_osx64.dll -mmacosx-version-min=10.7 -stdlib=libc++
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -205,7 +205,7 @@ ifeq ($(config),debug_x86)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -Wundef -O0 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -g -msse2 -Wall -Wextra -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m32 -Wshadow -Wundef -O0 -fPIC -fstrict-aliasing -Wstrict-aliasing=3 -g -msse2 -Wall -Wextra -std=gnu++17 -mmacosx-version-min=10.7 -stdlib=libc++
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86/Debug/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86/Debug/liblua_shared.a
+  LIBS += ../../../../garrysmod_common/projects/macosx/gmake/x86/Debug/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86/Debug/liblua_shared.a -framework AppKit
   LDDEPS += ../../../../garrysmod_common/projects/macosx/gmake/x86/Debug/libhelpers.a ../../../../garrysmod_common/projects/macosx/gmake/x86/Debug/liblua_shared.a
   ALL_LDFLAGS += $(LDFLAGS) -m32 -dynamiclib -Wl,-install_name,@rpath/gmcl_win_toast_osx.dll -mmacosx-version-min=10.7 -stdlib=libc++
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
