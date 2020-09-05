@@ -4,6 +4,8 @@
 #include <libnotify/notify.h>
 #elif defined(__APPLE__)
 #include <mac_notif.h>
+#include <mach-o/dyld.h>
+#include <vector>
 #endif
 #include <filesystem>
 #include <GarrysMod/Lua/Interface.h>
@@ -33,6 +35,22 @@ public:
 	void toastDismissed(WinToastLib::IWinToastHandler::WinToastDismissalReason state) const {}
 	void toastFailed() const {}
 };
+#endif
+
+#ifdef __APPLE__
+std::string get_current_path()
+{
+	unsigned int buffer_size = 512;
+	std::vector<char> buffer(buffer_size + 1);
+	if (_NSGetExecutablePath(&buffer[0], &buffer_size))
+	{
+		buffer.resize(buffer_size);
+		_NSGetExecutablePath(&buffer[0], &buffer_size);
+	}
+
+	std::string path = &buffer[0];
+	return path;
+}
 #endif
 
 LUA_FUNCTION(show_toast)
@@ -72,9 +90,9 @@ LUA_FUNCTION(show_toast)
 		const std::string full_path = gmod_path + "/garrysmod/data/" + data_path;
 		Notification = notify_notification_new(title, content, full_path.c_str());
 #elif defined(__APPLE__)
-		const std::string gmod_path = std::filesystem::current_path();
-		const std::string full_path = gmod_path + "/garrysmod/data/" + data_path;
-		display_notification(title, content, full_path.c_str());
+		const std::string gmod_path = get_current_path();
+		//const std::string full_path = gmod_path + "/garrysmod/data/" + data_path;
+		display_notification(title, gmod_path.c_str(), nullptr);//, full_path.c_str());
 #endif
 	}
 #ifdef __linux__
