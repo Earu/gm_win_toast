@@ -95,7 +95,7 @@ LUA_FUNCTION(show_toast)
 		std::size_t pos = gmod_path.find(needle);
 		if (pos != std::string::npos) 
 		{
-			const std::string full_path = gmod_path.substr(0, pos + needle.size()) + "/garrysmod/data/" + data_path;
+			const std::string full_path = gmod_path.substr(0, pos + (needle.size() - 1)) + "/garrysmod/data/" + data_path;
 			display_notification(title, content, full_path.c_str());
 		}
 		else
