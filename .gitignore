@@ -5,3 +5,4 @@
 projects/.DS_Store
 projects/macosx/.DS_Store
 .DS_Store
+.vscode/c_cpp_properties.json
