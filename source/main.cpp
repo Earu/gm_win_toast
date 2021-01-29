@@ -2,6 +2,10 @@
 #include <wintoastlib.h>
 #elif defined(__linux__)
 #include <libnotify/notify.h>
+#elif defined(__APPLE__)
+#include <mac_notif.h>
+#include <mach-o/dyld.h>
+#include <vector>
 #endif
 #include <filesystem>
 #include <GarrysMod/Lua/Interface.h>
@@ -11,22 +15,8 @@
 #ifdef _WIN32
 const auto AUMI = WinToastLib::WinToast::configureAUMI(L"Facepunch", L"Garry's Mod");
 #endif
-bool is_usable = true;
-static const char* error_reasons[] = {
-	"No error",
-	"Not inialized",
-	"OS is not supported",
-	"Unable to create a shell link",
-	"Invalid AUMI",
-	"Initialization params are invalid",
-	"Could not display toast",
-	"Unknown"
-};
 
-const std::string get_toast_error(int enum_value)
-{
-	return std::string(error_reasons[enum_value]);
-}
+bool is_usable = true;
 
 #ifdef _WIN32
 const std::wstring to_utf16(const char* utf8_str)
@@ -45,6 +35,22 @@ public:
 	void toastDismissed(WinToastLib::IWinToastHandler::WinToastDismissalReason state) const {}
 	void toastFailed() const {}
 };
+#endif
+
+#ifdef __APPLE__
+std::string get_current_path()
+{
+	unsigned int buffer_size = 512;
+	std::vector<char> buffer(buffer_size + 1);
+	if (_NSGetExecutablePath(&buffer[0], &buffer_size))
+	{
+		buffer.resize(buffer_size);
+		_NSGetExecutablePath(&buffer[0], &buffer_size);
+	}
+
+	std::string path = &buffer[0];
+	return path;
+}
 #endif
 
 LUA_FUNCTION(show_toast)
@@ -83,11 +89,30 @@ LUA_FUNCTION(show_toast)
 		const std::string gmod_path = std::filesystem::current_path();
 		const std::string full_path = gmod_path + "/garrysmod/data/" + data_path;
 		Notification = notify_notification_new(title, content, full_path.c_str());
+#elif defined(__APPLE__)
+		const std::string gmod_path = get_current_path();
+		const std::string needle = "/common/GarrysMod";
+		std::size_t pos = gmod_path.find(needle);
+		if (pos != std::string::npos) 
+		{
+			const std::string full_path = gmod_path.substr(0, pos + (needle.size() - 1)) + "/garrysmod/data/" + data_path;
+			display_notification(title, content, full_path.c_str());
+		}
+		else
+		{
+			display_notification(title, content, nullptr);
+		}
 #endif
 	}
 #ifdef __linux__
-	else {
+	else 
+	{
 		Notification = notify_notification_new(title, content, "dialog-information");
+	}
+#elif defined(__APPLE__)
+	else
+	{
+		display_notification(title, content, nullptr);
 	}
 #endif
 
@@ -96,6 +121,8 @@ LUA_FUNCTION(show_toast)
 	g_object_unref(G_OBJECT(Notification));
 #elif defined(_WIN32)
 	const bool success = WinToastLib::WinToast::instance()->showToast(templ, new WinNotifsHandler()) >= 0;
+#elif defined(__APPLE__)
+	const bool success = true;
 #endif
 	LUA->PushBool(success);
 	return 1;
@@ -111,7 +138,6 @@ GMOD_MODULE_OPEN()
 #elif defined(_WIN32)
 	if (!WinToastLib::WinToast::isCompatible())
 	{
-		//LUA->ThrowError("[WinToasts] Your system is not supported!");
 		is_usable = false;
 		return 0;
 	}
@@ -122,13 +148,13 @@ GMOD_MODULE_OPEN()
 	WinToastLib::WinToast::WinToastError err;
 	if (!WinToastLib::WinToast::instance()->initialize(&err))
 	{
-		//const std::string err_msg = "[WinToasts] Could not initialize: " + get_toast_error(err);
-		//LUA->ThrowError(err_msg.c_str());
 		is_usable = false;
 		return 0;
 	}
+#elif defined(__APPLE__)
+	is_usable = true;
 #else
-	// Poor macOS users ;(
+	// some weird os?
 	is_usable = false;
 #endif
 
