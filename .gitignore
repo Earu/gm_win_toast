@@ -1,7 +1,8 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/projects/windows/vs2019/.vs/win_toast/v16
+﻿/projects/windows/vs2019/.vs/win_toast/v16
 /projects/windows/vs2019/x86_64/Debug
 /projects/windows/vs2019/x86_64/Release
+/projects/macosx/x86_64
+projects/.DS_Store
+projects/macosx/.DS_Store
+.DS_Store
+.vscode/c_cpp_properties.json
