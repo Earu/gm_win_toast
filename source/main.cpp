@@ -31,9 +31,9 @@ const std::string get_toast_error(int enum_value)
 #ifdef _WIN32
 const std::wstring to_utf16(const char* utf8_str)
 {
-	const std::string base_str(utf8_str);
-	std::wstring utf16_str(base_str.size(), L' ');
-	utf16_str.resize(std::mbstowcs(&utf16_str[0], base_str.c_str(), base_str.size()));
+	int utf16_size = MultiByteToWideChar(CP_UTF8, 0, utf8_str, -1, NULL, 0);
+	wchar_t* utf16_str = new wchar_t[utf16_size];
+	MultiByteToWideChar(CP_UTF8, 0, utf8_str, -1, utf16_str, utf16_size);
 
 	return utf16_str;
 }
